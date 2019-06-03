@@ -92,6 +92,8 @@ __attribute__((weak)) RGB rgb_matrix_hsv_to_rgb(HSV hsv) { return hsv_to_rgb(hsv
 #    define RGB_MATRIX_SPD_STEP 16
 #endif
 
+#define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_SOLID_COLOR
+
 #if !defined(RGB_MATRIX_STARTUP_MODE)
 #    ifndef DISABLE_RGB_MATRIX_CYCLE_LEFT_RIGHT
 #        define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_CYCLE_LEFT_RIGHT
