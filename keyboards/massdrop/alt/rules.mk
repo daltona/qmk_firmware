@@ -11,7 +11,7 @@ CUSTOM_MATRIX = yes
 # Build Options
 #   comment out to disable the options.
 #
-BOOTMAGIC_ENABLE = no       # Virtual DIP switch configuration
+BOOTMAGIC_ENABLE = yes       # Virtual DIP switch configuration
 MOUSEKEY_ENABLE = no        # Mouse keys
 EXTRAKEY_ENABLE = yes       # Audio control and System control
 CONSOLE_ENABLE = no         # Console for debug
@@ -27,9 +27,9 @@ UNICODE_ENABLE = no         # Unicode
 BLUETOOTH_ENABLE = no       # Enable Bluetooth with the Adafruit EZ-Key HID
 AUDIO_ENABLE = no           # Audio output on port C6
 VIRTSER_ENABLE = no         # USB Serial Driver
-RAW_ENABLE = no             # Raw device
+RAW_ENABLE = yes             # Raw device
 AUTO_SHIFT_ENABLE = no      # Auto Shift
-
+VIA_ENABLE = yes
 # Custom RGB matrix handling
 RGB_MATRIX_ENABLE = yes
 RGB_MATRIX_DRIVER = custom

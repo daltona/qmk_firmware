@@ -18,36 +18,33 @@
 #include "core_cm4.h"
 #include "component/nvmctrl.h"
 
+#define EEPROM_SIZE 1024
+
 #ifndef EEPROM_SIZE
 #    include "eeconfig.h"
 #    define EEPROM_SIZE (((EECONFIG_SIZE + 3) / 4) * 4)  // based off eeconfig's current usage, aligned to 4-byte sizes, to deal with LTO
 #endif
 
 __attribute__((aligned(4))) static uint8_t buffer[EEPROM_SIZE];
-volatile uint8_t *SmartEEPROM8 = (uint8_t *) SEEPROM_ADDR;
+volatile uint8_t *                         SmartEEPROM8 = (uint8_t *)SEEPROM_ADDR;
 
 uint8_t eeprom_read_byte(const uint8_t *addr) {
     uintptr_t offset = (uintptr_t)addr;
-    if (offset >= EEPROM_SIZE)
-        return 0x0;
+    if (offset >= EEPROM_SIZE) return 0x0;
 
-    if (NVMCTRL->SEESTAT.bit.PSZ == 0 || NVMCTRL->SEESTAT.bit.SBLK == 0)
-        return buffer[offset];
+    if (NVMCTRL->SEESTAT.bit.PSZ == 0 || NVMCTRL->SEESTAT.bit.SBLK == 0) return buffer[offset];
 
     int timeout = 10000;
     while (NVMCTRL->SEESTAT.bit.BUSY && timeout-- > 0)
         ;
-    if (!NVMCTRL->SEESTAT.bit.BUSY)
-        return SmartEEPROM8[offset];
+    if (!NVMCTRL->SEESTAT.bit.BUSY) return SmartEEPROM8[offset];
 
     return 0;
 }
 
 void eeprom_write_byte(uint8_t *addr, uint8_t value) {
     uintptr_t offset = (uintptr_t)addr;
-    if (offset >= EEPROM_SIZE)
-        return;
-
+    if (offset >= EEPROM_SIZE) return;
     if (NVMCTRL->SEESTAT.bit.PSZ == 0 || NVMCTRL->SEESTAT.bit.SBLK == 0) {
         buffer[offset] = value;
         return;
@@ -56,8 +53,7 @@ void eeprom_write_byte(uint8_t *addr, uint8_t value) {
     int timeout = 10000;
     while (NVMCTRL->SEESTAT.bit.BUSY && timeout-- > 0)
         ;
-    if (!NVMCTRL->SEESTAT.bit.BUSY)
-        SmartEEPROM8[offset] = value;
+    if (!NVMCTRL->SEESTAT.bit.BUSY) SmartEEPROM8[offset] = value;
 }
 
 uint16_t eeprom_read_word(const uint16_t *addr) {
